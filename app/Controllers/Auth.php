@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UsersModel;
+use CodeIgniter\Controller;
 
 class Auth extends BaseController
 {
@@ -10,7 +11,8 @@ class Auth extends BaseController
 
     public function __construct()
     {
-        $this->usersModel = new UsersModel();
+        // Inisialisasi Model
+        $this->usersModel = model(UsersModel::class);
     }
 
     public function index()
@@ -61,6 +63,8 @@ class Auth extends BaseController
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
+
+                // Data Session yang disetel saat login berhasil
                 $userData = [
                     'id'       => $user['id'],
                     'username' => $user['username'],
@@ -68,12 +72,12 @@ class Auth extends BaseController
                 ];
                 $session->set($userData);
 
-                // Ambil URL redirect yang tersimpan (jika ada)
+                // Ambil URL redirect yang disimpan oleh Filter
                 if ($redirectUrl = $session->getFlashdata('redirect_url')) {
                     return redirect()->to($redirectUrl);
                 }
 
-                // Redirect berdasarkan role
+                // Redirect default berdasarkan role
                 switch ($user['role_id']) {
                     case 1:
                         return redirect()->to(site_url('admin'));
@@ -95,6 +99,7 @@ class Auth extends BaseController
     public function logout()
     {
         $session = service('session');
+        // Hapus kunci session yang disetel saat login
         $session->remove(['id', 'username', 'role_id']);
         $session->setFlashdata('success', 'You have been logged out!');
         return redirect()->to(site_url('auth'));

@@ -30,9 +30,6 @@ class Admin extends BaseController
         // Panggil initController() milik BaseController
         parent::initController($request, $response, $logger);
 
-        // 1. Cek Akses
-        is_logged_in();
-
         // 2. Inisialisasi Model
         $this->usersModel     = new UsersModel();
         $this->dashboardModel = new DashboardModel();

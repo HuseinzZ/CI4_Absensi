@@ -11,68 +11,55 @@ class UsersModel extends Model
     protected $primaryKey = 'id';
 
     protected $returnType     = 'array';
-    protected $useSoftDeletes = false; // Set true jika menggunakan soft delete
+    protected $useSoftDeletes = false;
 
     protected $allowedFields = [
         'username',
         'password',
         'role_id',
         'employee_id',
-        'etc_fields', // pastikan field ini benar-benar ada di DB
+        'created_at', // Diasumsikan kolom ini ada
+        'updated_at', // Diasumsikan kolom ini ada
+        // 'etc_fields', // Dihapus karena biasanya field ini tidak ada di DB
     ];
 
     // =====================
-    // CRUD Dasar
+    // CRUD Dasar (Gunakan deklarasi sederhana)
     // =====================
 
-    /**
-     * Mengambil semua data pengguna dari tabel 'users'.
-     */
-    public function getAll(): array
+    public function getAll()
     {
         return $this->findAll();
     }
 
-    /**
-     * Mengambil data pengguna berdasarkan ID.
-     */
-    public function getById(int $id): ?array
+    public function getById($id)
     {
         return $this->find($id);
     }
 
-    /**
-     * Mengambil data pengguna berdasarkan username.
-     */
-    public function getByUsername(string $username): ?array
+    public function getByUsername($username)
     {
         return $this->where('username', $username)->first();
     }
 
-    /**
-     * Update data pengguna berdasarkan ID.
-     */
-    public function updateData(int $id, array $data): bool
+    public function updateData($id, $data)
     {
         return $this->update($id, $data);
     }
 
-    /**
-     * Hapus data pengguna berdasarkan ID.
-     */
-    public function deleteData(int $id): bool
+    public function deleteData($id)
     {
         return $this->delete($id);
     }
 
     // =====================
-    // Metode Kustom
+    // Metode Kustom (Hapus Type Hinting di Sini)
     // =====================
 
     /**
      * Mengambil data pengguna + employee + posisi berdasarkan username.
      */
-    public function getByUsernameWithEmployeeData(string $username): ?array
+    public function getByUsernameWithEmployeeData($username)
     {
         return $this->select('users.*, employee.*, position.id AS position_id, position.name AS position_name')
             ->join('employee', 'users.employee_id = employee.id', 'inner')
@@ -84,7 +71,7 @@ class UsersModel extends Model
     /**
      * Mengambil daftar semua karyawan dengan posisi + username.
      */
-    public function getAllUsersWithEmployeeData(): array
+    public function getAllUsersWithEmployeeData()
     {
         return $this->db->table('employee')
             ->select('employee.id AS e_id, position.id AS d_id, users.username AS u_username, employee.name AS e_name')
@@ -98,7 +85,7 @@ class UsersModel extends Model
     /**
      * Update data pengguna berdasarkan username.
      */
-    public function updateByUsername(string $username, array $data): bool
+    public function updateByUsername($username, $data)
     {
         return $this->where('username', $username)->set($data)->update();
     }
@@ -106,7 +93,7 @@ class UsersModel extends Model
     /**
      * Hapus data pengguna berdasarkan username.
      */
-    public function deleteByUsername(string $username): bool
+    public function deleteByUsername($username)
     {
         return $this->where('username', $username)->delete();
     }
@@ -114,7 +101,7 @@ class UsersModel extends Model
     /**
      * Mengambil semua employee (role_id = 2).
      */
-    public function getEmployees(): array
+    public function getEmployees()
     {
         return $this->db->table('employee')
             ->select('employee.id, employee.name')
@@ -128,7 +115,7 @@ class UsersModel extends Model
     /**
      * Mengambil data employee tunggal berdasarkan ID employee.
      */
-    public function getEmployeeDataById(int $employee_id): ?array
+    public function getEmployeeDataById($employee_id)
     {
         return $this->db->table('employee')
             ->where('id', $employee_id)

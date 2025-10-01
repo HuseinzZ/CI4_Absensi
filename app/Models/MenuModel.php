@@ -6,6 +6,12 @@ use CodeIgniter\Model;
 
 class MenuModel extends Model
 {
+    // Deklarasi properti $db
+    protected $db;
+
+    // Properti ini TIDAK memerlukan __construct() eksplisit
+    // CI4 akan secara otomatis mengisi $this->db dengan koneksi default.
+
     /**
      * Mengambil daftar menu berdasarkan role_id dari tabel user_access.
      * @param int $role_id
@@ -13,6 +19,7 @@ class MenuModel extends Model
      */
     public function getMenuByRole(int $role_id): array
     {
+        // Akses Query Builder melalui properti $this->db
         return $this->db->table('user_menu')
             ->select('user_menu.id, user_menu.menu')
             ->join('user_access', 'user_menu.id = user_access.menu_id')
@@ -29,6 +36,7 @@ class MenuModel extends Model
      */
     public function getSubMenuByMenuId(int $menuId): array
     {
+        // Akses Query Builder melalui properti $this->db
         return $this->db->table('user_submenu')
             ->select('*')
             ->where('menu_id', $menuId)
