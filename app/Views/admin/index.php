@@ -17,7 +17,6 @@
 
     <div class="row">
 
-        <!-- Card: Positions -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
@@ -48,7 +47,6 @@
             </div>
         </div>
 
-        <!-- Card: Employees -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
@@ -79,7 +77,6 @@
             </div>
         </div>
 
-        <!-- Card: Today's Attendance -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
@@ -110,7 +107,6 @@
             </div>
         </div>
 
-        <!-- Card: Users -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-danger shadow h-100 py-2">
                 <div class="card-body">
@@ -143,10 +139,8 @@
 
     </div>
 
-    <!-- Charts -->
     <div class="row">
 
-        <!-- Area Chart -->
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -155,7 +149,7 @@
                     </h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button"
-                            id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in"
@@ -173,14 +167,13 @@
             </div>
         </div>
 
-        <!-- Pie Chart -->
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 fw-bold text-primary">Overall Attendance Status (%)</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button"
-                            id="dropdownMenuLinkPie" data-bs-toggle="dropdown" aria-expanded="false">
+                            id="dropdownMenuLinkPie" data-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in"
@@ -218,7 +211,7 @@
 
     // Data untuk Pie Chart (Status Kehadiran: Present, Late)
     var attendancePieData = [
-        <?= $attendance_status['percentages']['Present']; ?>,
-        <?= $attendance_status['percentages']['Late']; ?>
+        <?= esc($attendance_status['percentages']['Present']); ?>,
+        <?= esc($attendance_status['percentages']['Late']); ?>
     ];
 </script>
