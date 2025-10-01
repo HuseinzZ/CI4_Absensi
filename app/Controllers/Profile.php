@@ -4,56 +4,42 @@ namespace App\Controllers;
 
 use App\Models\UsersModel;
 use App\Models\MenuModel;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Profile extends BaseController
 {
     protected $usersModel;
     protected $menuModel;
 
-    /**
-     * Inisialisasi Model dan cek akses login.
-     */
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
+    public function __construct()
     {
-        parent::initController($request, $response, $logger);
-
-        // Cek apakah user sudah login
-        is_logged_in();
-
-        // Inisialisasi Model
-        $this->usersModel = new UsersModel();
-        $this->menuModel  = new MenuModel();
+        $this->usersModel = model(UsersModel::class);
+        $this->menuModel = model(MenuModel::class);
     }
 
-    /**
-     * Halaman profil pengguna.
-     */
     public function index()
     {
         $session = service('session');
 
-        $data = [
-            'title'   => 'My Profile',
-            'account' => $this->usersModel->getByUsernameWithEmployeeData($session->get('username')),
-        ];
+        $d['title'] = 'My Profile';
+        $username = $session->get('username');
+        $role_id = $session->get('role_id');
 
-        // Menu & Submenu berdasarkan role
-        $roleId      = $session->get('role_id');
-        $data['menu'] = $this->menuModel->getMenuByRole($roleId);
-
-        $data['submenus'] = [];
-        foreach ($data['menu'] as $mn) {
-            $data['submenus'][$mn['id']] = $this->menuModel->getSubMenuByMenuId($mn['id']);
+        if (is_null($username) || is_null($role_id)) {
+            return redirect()->to(site_url('auth'));
         }
 
-        // Load view dengan layout dashboard
-        echo view('templates/header', $data);
-        echo view('templates/sidebar', $data);
-        echo view('templates/topbar', $data);
-        echo view('profile/index', $data);
-        echo view('templates/footer');
+        $d['account'] = $this->usersModel->getByUsernameWithEmployeeData($username);
+        $d['menu'] = $this->menuModel->getMenuByRole((int)$role_id);
+
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->menuModel->getSubMenuByMenuId($mn['id']);
+        }
+
+        return view('templates/header', $d)
+            . view('templates/sidebar', $d)
+            . view('templates/topbar')
+            . view('profile/index', $d)
+            . view('templates/footer');
     }
 }

@@ -8,8 +8,6 @@ use App\Models\PositionModel;
 use App\Models\UsersModel;
 use App\Models\MenuModel;
 
-use CodeIgniter\Controller;
-
 class Master extends BaseController
 {
     // Properti untuk Dependency Injection Model

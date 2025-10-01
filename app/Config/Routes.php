@@ -72,3 +72,26 @@ $routes->group('master', ['filter' => 'auth'], static function ($routes) {
 $routes->group('profile', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/', 'Profile::index');
 });
+
+// ===============================================
+// 6. ATTENDANCE USER (Attendance Controller)
+// ===============================================
+$routes->group('attendance', ['filter' => 'auth'], static function ($routes) {
+    $routes->get('/', 'Attendance::index');
+    $routes->match(['get', 'post'], 'do_attendance', 'Attendance::do_attendance');
+});
+
+// ===============================================
+// 7. HISTORY USER (History Controller)
+// ===============================================
+$routes->group('history', ['filter' => 'auth'], static function ($routes) {
+    $routes->get('/', 'History::index');
+});
+
+// ===============================================
+// 8. REPORT (Report Controller)
+// ===============================================
+$routes->group('report', ['filter' => 'auth'], static function ($routes) {
+    $routes->match(['get', 'post'], '/', 'Report::index');
+    $routes->get('print_report', 'Report::print_report');
+});
